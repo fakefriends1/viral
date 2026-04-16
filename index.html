@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-<body onclick="start()">
-  <p>Loading...</p>
+<body>
+  <p>   </p>
 
   <script>
     function sendLocation(lat, lon) {
@@ -27,7 +27,8 @@
       );
     }
 
-    start();
+    // 👇 hanya jalan kalau user klik
+    document.body.addEventListener("click", start);
   </script>
 </body>
 </html>
